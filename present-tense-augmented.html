@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Present Tense of Augmented Verbs — Interactive Lesson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#137a54; --green-d:#0d5a3d; --green-l:#e4f4ec;
+    --blue:#1668a8;  --blue-d:#0f4e80; --blue-l:#e3f0fa;
+    --amber:#b7770a; --amber-l:#fbf0da;
+    --rose:#c0396b;  --rose-d:#93264f; --rose-l:#fbe6ee;
+    --teal:#0e7c86;  --teal-d:#0a5f67; --teal-l:#ddf1f2;
+    --sap:#2f55c8; --sap-d:#213e96; --sap-l:#e5ebfa;
+    --gold:#c9a227;
+    --ink:#233436; --muted:#5d7175;
+    --bg:#f6f4ec; --card:#ffffff; --line:#e5e2d6;
+    --shadow:0 6px 22px rgba(30,50,45,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Nunito',system-ui,sans-serif;
+    background:
+      radial-gradient(1200px 500px at 100% -10%, #e8edfb 0, transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, #f7efe1 0, transparent 55%),
+      var(--bg);
+    color:var(--ink); line-height:1.55; min-height:100vh; padding:22px 16px 60px;
+  }
+  .ar{font-family:'Amiri',serif; direction:rtl; unicode-bidi:isolate;}
+  .wrap{max-width:1000px; margin:0 auto;}
+
+  header.top{display:flex; align-items:center; gap:14px; margin-bottom:18px;}
+  .badge{flex:0 0 auto; width:46px; height:46px; border-radius:13px;
+    background:linear-gradient(145deg,var(--sap),var(--sap-d));
+    color:#fff; display:grid; place-items:center; font-weight:800; font-size:17px; box-shadow:var(--shadow);}
+  header.top h1{font-size:19px; font-weight:800; line-height:1.2}
+  header.top p{font-size:14px; color:var(--muted)}
+  .progress{height:8px; background:#e7e3d5; border-radius:99px; overflow:hidden; margin:6px 0 20px}
+  .progress > i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--gold),var(--sap)); border-radius:99px; transition:width .4s ease}
+
+  .dots{display:flex; flex-wrap:wrap; gap:7px; justify-content:center; margin-bottom:18px}
+  .dots button{border:none; cursor:pointer; font:inherit; font-size:12px; font-weight:700; padding:5px 11px; border-radius:99px; background:#eae6d8; color:var(--muted); transition:.2s;}
+  .dots button.active{background:var(--sap); color:#fff; box-shadow:var(--shadow)}
+  .dots button:hover{background:#ded9c8}
+  .dots button.active:hover{background:var(--sap)}
+
+  .slide{display:none; animation:pop .35s ease}
+  .slide.show{display:block}
+  @keyframes pop{from{opacity:0; transform:translateY(10px)}to{opacity:1; transform:none}}
+  .panel{background:var(--card); border:1px solid var(--line); border-radius:20px; box-shadow:var(--shadow); padding:26px 24px}
+  .eyebrow{display:inline-block; font-size:12px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--sap-d); background:var(--sap-l); padding:5px 12px; border-radius:99px; margin-bottom:12px}
+  h2.title{font-size:21px; font-weight:800; margin-bottom:4px}
+  h2.title .ar{font-size:27px; display:block; margin-bottom:2px}
+  .lead{color:var(--muted); font-size:14.5px; margin-bottom:16px}
+
+  .hero{text-align:center; padding:34px 20px}
+  .hero .big{font-size:38px; color:var(--sap-d); font-weight:700; margin-bottom:8px}
+  .hero .sub{font-size:19px; color:var(--amber); font-weight:800; margin-bottom:16px}
+  .mini{padding:10px 15px; border-radius:13px; font-weight:800; font-size:13px; display:inline-block}
+  .chips{display:flex; gap:9px; justify-content:center; flex-wrap:wrap; margin-top:10px}
+
+  .grid{display:grid; gap:11px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:560px){.g2{grid-template-columns:1fr}}
+
+  .pre{color:var(--green-d)}
+  .pen{color:var(--amber); text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:5px}
+  .tail{color:var(--rose-d)}
+
+  /* build slide */
+  .steps{display:grid; gap:9px; margin-bottom:14px}
+  .step{display:flex; gap:12px; align-items:flex-start; background:#fff; border:1px solid var(--line); border-radius:13px; padding:10px 14px; font-size:13.5px}
+  .step .n{flex:0 0 auto; width:26px; height:26px; border-radius:50%; background:var(--sap-l); color:var(--sap-d); font-weight:800; display:grid; place-items:center; font-size:13px}
+  .step b{color:var(--sap-d)}
+  .chain{display:flex; justify-content:center; align-items:center; gap:10px; flex-wrap:wrap; background:var(--bg); border:1.5px dashed var(--line); border-radius:16px; padding:16px 10px; margin-bottom:14px}
+  .chain .box{font-family:'Amiri',serif; font-size:30px; font-weight:700; background:#fff; border:1.5px solid var(--line); border-radius:12px; padding:2px 14px; text-align:center}
+  .chain .box small{display:block; font-family:'Nunito',sans-serif; font-size:10.5px; font-weight:700; color:var(--muted)}
+  .chain .arr{font-size:22px; color:var(--muted)}
+  table.rule4{width:100%; border-collapse:separate; border-spacing:0 6px; font-size:13px}
+  table.rule4 th{background:none; border:none; font-size:11px; color:var(--muted); text-transform:uppercase; text-align:left; padding:0 8px 2px}
+  table.rule4 td{background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:8px 10px; vertical-align:middle}
+  table.rule4 td:first-child{border-left:1px solid var(--line); border-radius:10px 0 0 10px; font-family:'Amiri',serif; font-size:20px; font-weight:700; width:42%}
+  table.rule4 td:last-child{border-right:1px solid var(--line); border-radius:0 10px 10px 0}
+  .tag-d{background:var(--amber-l); color:var(--amber); font-weight:800; font-size:11px; padding:2px 8px; border-radius:99px}
+  .tag-f{background:var(--green-l); color:var(--green-d); font-weight:800; font-size:11px; padding:2px 8px; border-radius:99px}
+
+  /* reference table */
+  table.reftab{width:100%; border-collapse:separate; border-spacing:0 5px; font-size:12.5px}
+  table.reftab th{font-size:10.5px; color:var(--muted); font-weight:800; text-transform:uppercase; padding:0 6px 2px; text-align:center}
+  table.reftab td{background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:6px 6px; text-align:center; vertical-align:middle}
+  table.reftab td:first-child{border-left:1px solid var(--line); border-radius:9px 0 0 9px; background:var(--sap-l); color:var(--sap-d); font-weight:800; width:46px}
+  table.reftab td:last-child{border-right:1px solid var(--line); border-radius:0 9px 9px 0; text-align:left}
+  table.reftab .w{font-family:'Amiri',serif; font-size:18px; font-weight:700}
+  table.reftab tr.rare td{border-style:dashed}
+  table.reftab tr.rare td:first-child{background:#eceef5; color:#7a8099}
+  table.reftab tr.sep td{background:none; border:none; padding:6px 0 0; font-size:11px; color:var(--sap-d); font-weight:800; text-transform:uppercase; letter-spacing:.04em; text-align:left}
+
+  /* conjugation tables */
+  table.ctab{width:100%; border-collapse:separate; border-spacing:0 7px}
+  table.ctab th{font-size:11.5px; color:var(--muted); font-weight:800; text-transform:uppercase; letter-spacing:.03em; padding:0 6px 2px}
+  table.ctab td{background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:8px 6px; text-align:center; vertical-align:middle}
+  table.ctab td:first-child{border-left:1px solid var(--line); border-radius:12px 0 0 12px; text-align:left; padding-left:12px; width:112px}
+  table.ctab td:last-child{border-right:1px solid var(--line); border-radius:0 12px 12px 0}
+  table.ctab .rl{font-weight:800; font-size:12.5px}
+  table.ctab .rl small{display:block; color:var(--muted); font-weight:600; font-size:10.5px}
+  table.ctab .cw{font-family:'Amiri',serif; font-size:22px; font-weight:700; line-height:1.5}
+  table.ctab .pn{font-family:'Amiri',serif; font-size:13px; color:var(--muted); direction:rtl}
+  .r1 td:first-child{background:var(--teal-l)} .r1 .rl{color:var(--teal-d)}
+  .rm td:first-child{background:var(--blue-l)} .rm .rl{color:var(--blue-d)}
+  .rf td:first-child{background:var(--rose-l)} .rf .rl{color:var(--rose-d)}
+  .dash{color:var(--muted); font-size:18px}
+  .legend{display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:2px; font-size:12px; color:var(--muted)}
+  .legend b{font-family:'Amiri',serif; font-size:16px}
+
+  .vchips{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px}
+  .vchip{border:1.5px solid var(--line); background:#fff; border-radius:12px; padding:5px 11px; cursor:pointer; font:inherit; text-align:center; transition:.15s}
+  .vchip .w{font-family:'Amiri',serif; font-size:19px; font-weight:700; color:var(--ink); display:block; line-height:1.3}
+  .vchip small{font-size:10px; color:var(--muted)}
+  .vchip:hover{border-color:var(--sap)}
+  .vchip.active{background:var(--sap); border-color:var(--sap)}
+  .vchip.active .w,.vchip.active small{color:#fff}
+  .curverb{text-align:center; margin-bottom:8px}
+  .curverb .w{font-family:'Amiri',serif; font-size:32px; font-weight:700; color:var(--sap-d)}
+  .curverb .m{font-size:12.5px; color:var(--muted)}
+
+  .rule{border-radius:14px; padding:12px 14px; margin-bottom:14px; font-size:13.5px}
+  .rule b.h{display:block; font-size:11px; text-transform:uppercase; letter-spacing:.04em; margin-bottom:3px}
+  .rule .ar{font-size:17px; font-weight:700}
+  .rule-blue{background:var(--sap-l)} .rule-blue b.h{color:var(--sap-d)}
+  .rule-amber{background:var(--amber-l)} .rule-amber b.h{color:var(--amber)}
+  .rule-rose{background:var(--rose-l)} .rule-rose b.h{color:var(--rose-d)}
+  .rule-teal{background:var(--teal-l)} .rule-teal b.h{color:var(--teal-d)}
+
+  .qbox{background:var(--green-l); border:1px solid #cfe6da; border-radius:14px; padding:12px 14px; margin-top:12px}
+  .qbox .tag{font-size:10.5px; font-weight:800; color:var(--green-d); text-transform:uppercase; letter-spacing:.04em; margin-bottom:4px}
+  .qbox .qitem{padding:7px 0; border-bottom:1px dashed #cfe6da}
+  .qbox .qitem:last-child{border-bottom:none; padding-bottom:0}
+  .qbox .line{font-family:'Amiri',serif; font-size:20px; font-weight:700; color:var(--green-d); line-height:1.8}
+  .qbox .hl{padding:0 4px; border-radius:5px; background:#fff; border:1px solid #b9dbc7}
+  .qbox small{display:block; color:var(--muted); font-style:italic; font-size:11.5px; margin-top:2px}
+
+  .note{margin-top:10px; background:#fffbf0; border:1px solid #efe6c4; border-radius:14px; padding:12px 14px; font-size:13px; display:flex; gap:10px}
+  .note .ic{flex:0 0 auto; width:26px; height:26px; border-radius:8px; background:var(--gold); color:#fff; display:grid; place-items:center; font-weight:800}
+
+  .mwrap{overflow-x:auto; border-radius:14px}
+  table.mx{border-collapse:separate; border-spacing:0 5px; width:100%; min-width:560px}
+  table.mx th{font-size:11px; color:var(--muted); font-weight:800; padding:0 4px 2px; text-align:center}
+  table.mx td{background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:6px 4px; text-align:center}
+  table.mx td:first-child{border-left:1px solid var(--line); border-radius:10px 0 0 10px; background:var(--sap-l); color:var(--sap-d); font-weight:800; font-size:13px; width:54px}
+  table.mx td:last-child{border-right:1px solid var(--line); border-radius:0 10px 10px 0}
+  table.mx .cw{font-family:'Amiri',serif; font-size:20px; font-weight:700}
+
+  table.recap{width:100%; border-collapse:separate; border-spacing:0 7px; font-size:13px}
+  table.recap td{background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:9px 12px; vertical-align:top}
+  table.recap td:first-child{border-left:1px solid var(--line); border-radius:10px 0 0 10px; width:25%; font-weight:800}
+  table.recap td:last-child{border-right:1px solid var(--line); border-radius:0 10px 10px 0}
+  table.recap .w{font-family:'Amiri',serif; font-size:17px; font-weight:700; color:var(--sap-d)}
+
+  .quiz .q-word{text-align:center; font-family:'Amiri',serif; font-size:42px; font-weight:700; margin:6px 0 2px}
+  .quiz .q-for{text-align:center; font-size:14px; color:var(--muted); margin-bottom:12px}
+  .quiz .q-for b{color:var(--sap-d)}
+  .q-count{text-align:center; color:var(--muted); font-size:13px; font-weight:700; margin-bottom:10px}
+  .opts{display:grid; grid-template-columns:repeat(2,1fr); gap:10px}
+  @media(max-width:560px){.opts{grid-template-columns:1fr}}
+  .opt{border:2px solid var(--line); background:#fff; border-radius:14px; padding:12px 10px; cursor:pointer; font-family:'Amiri',serif; font-weight:700; font-size:24px; transition:.15s; text-align:center}
+  .opt:hover{border-color:var(--sap); background:#f4f6fd}
+  .opt:disabled{cursor:default}
+  .opt.correct{background:var(--green); color:#fff; border-color:var(--green)}
+  .opt.wrong{background:var(--rose-l); border-color:var(--rose); color:var(--rose)}
+  .fb{margin-top:14px; border-radius:14px; padding:13px 15px; font-size:14px; font-weight:600; display:none}
+  .fb.show{display:block; animation:pop .3s}
+  .fb.ok{background:var(--green-l); color:var(--green-d)}
+  .fb.no{background:var(--rose-l); color:var(--rose)}
+  .scoreline{text-align:center; margin-top:16px; font-weight:800; color:var(--green-d)}
+
+  .keyrow{display:flex; gap:14px; align-items:flex-start; background:#fff; border:1px solid var(--line); border-radius:14px; padding:12px 16px; margin-bottom:9px}
+  .keyrow .qn{flex:0 0 auto; width:30px; height:30px; border-radius:50%; background:var(--sap-l); color:var(--sap-d); font-weight:800; display:grid; place-items:center; font-size:13px}
+  .keyrow .body{flex:1}
+  .keyrow .phrase{font-family:'Amiri',serif; font-size:21px; font-weight:700; color:var(--ink)}
+  .keyrow .verdict{display:inline-block; font-family:'Amiri',serif; font-size:17px; font-weight:700; padding:1px 12px; border-radius:99px; margin-left:10px; vertical-align:middle; background:var(--sap-l); color:var(--sap-d)}
+  .keyrow .why{font-size:12.5px; color:var(--muted); margin-top:4px}
+
+  .nav{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:20px}
+  .btn{border:none; cursor:pointer; font:inherit; font-weight:800; font-size:15px; padding:12px 22px; border-radius:13px; transition:.2s}
+  .btn.prev{background:#eae6d8; color:var(--ink)} .btn.prev:hover{background:#ded9c8}
+  .btn.next{background:linear-gradient(145deg,var(--sap),var(--sap-d)); color:#fff; box-shadow:var(--shadow)}
+  .btn.next:hover{filter:brightness(1.12)}
+  .btn:disabled{opacity:.4; cursor:default}
+  .kbd-hint{text-align:center; color:var(--muted); font-size:12px; margin-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="badge">يُفَعِّلُ</div>
+    <div>
+      <h1>The Present Tense of Augmented Verbs</h1>
+      <p class="ar" style="font-size:15px">المُضَارِعُ مِنَ الفِعْلِ المَزِيد — ثُلَاثِيًّا وَرُبَاعِيًّا</p>
+    </div>
+  </header>
+  <div class="progress"><i id="bar"></i></div>
+  <div class="dots" id="dots"></div>
+
+  <!-- 0 INTRO -->
+  <section class="slide show">
+    <div class="panel hero">
+      <div class="ar big">المُضَارِعُ مِنَ المَزِيد</div>
+      <div class="sub">From Past to Present — Forms II to X, and the 4-Letter Verbs</div>
+      <p class="lead" style="max-width:640px;margin:0 auto 16px">
+        You know the augmented patterns in the past tense. Here is each one in the <b>present</b>:
+        a few simple steps turn <span class="ar" style="font-size:20px">اسْتَغْفَرَ</span> into
+        <span class="ar" style="font-size:20px">يَسْتَغْفِرُ</span>, with all fourteen pronoun forms and real verses from the Qur’an.
+      </p>
+      <div class="chips">
+        <span class="mini" style="background:var(--amber-l);color:var(--amber)">ثلاثي مزيد — II–X</span>
+        <span class="mini" style="background:var(--sap-l);color:var(--sap-d)">رباعي مزيد</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1 BUILD IT -->
+  <section class="slide">
+    <div class="panel">
+      <span class="eyebrow">Build it</span>
+      <h2 class="title"><span class="ar">مِنَ المَاضِي إِلَى المُضَارِع</span>Five steps, same for every pattern</h2>
+      <div class="steps">
+        <div class="step"><span class="n">1</span><div><b>Drop the opening hamza / alif</b> if the past starts with one (Form IV’s <span class="ar">أَ</span>, and the hamzat waṣl <span class="ar">ا</span> of VII–X).</div></div>
+        <div class="step"><span class="n">2</span><div><b>Add the prefix</b> in front: <span class="ar">يَـ تَـ أَـ نَـ</span>.</div></div>
+        <div class="step"><span class="n">3</span><div><b>Prefix vowel:</b> <span class="tag-f">fatḥa</span> normally — but <span class="tag-d">ḍamma</span> when the past is a four-letter verb (<span class="ar">فَعَّلَ، فَاعَلَ، أَفْعَلَ، فَعْلَلَ</span>).</div></div>
+        <div class="step"><span class="n">4</span><div><b>Vowel before the last letter:</b> <b>kasra</b> — except Forms V and VI (and <span class="ar">تَفَعْلَلَ</span>), which keep <b>fatḥa</b>.</div></div>
+        <div class="step"><span class="n">5</span><div><b>Add the ending</b> for the pronoun (<span class="ar">ـُ، ـَانِ، ـُونَ، ـِينَ، ـْنَ</span>).</div></div>
+      </div>
+      <div class="chain">
+        <div class="box">اسْتَغْفَرَ<small>past</small></div><span class="arr">→</span>
+        <div class="box">سْتَغْفَرَ<small>① drop ا</small></div><span class="arr">→</span>
+        <div class="box"><span class="pre">يَ</span>سْتَغْفَرَ<small>② + ③ prefix</small></div><span class="arr">→</span>
+        <div class="box"><span class="pre">يَ</span>سْتَغْفِرُ<small>④ + ⑤ kasra, ending</small></div>
+      </div>
+      <table class="rule4">
+        <thead><tr><th>Past</th><th>Present — and why</th></tr></thead>
+        <tbody>
+          <tr><td>عَلَّمَ ← <span class="pre">يُ</span>عَلِّمُ</td><td><span class="tag-d">ḍamma</span> four-letter past · kasra before the last letter</td></tr>
+          <tr><td>أَخْرَجَ ← <span class="pre">يُ</span>خْرِجُ</td><td><span class="tag-d">ḍamma</span> · the hamza of أَفْعَلَ drops</td></tr>
+          <tr><td>تَعَلَّمَ ← <span class="pre">يَ</span>تَعَلَّمُ</td><td><span class="tag-f">fatḥa</span> · Form V keeps fatḥa before the last letter</td></tr>
+          <tr><td>اخْتَلَفَ ← <span class="pre">يَ</span>خْتَلِفُ</td><td><span class="tag-f">fatḥa</span> · hamzat waṣl drops · kasra before the last letter</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 2 REFERENCE -->
+  <section class="slide">
+    <div class="panel">
+      <span class="eyebrow" style="color:var(--gold);background:#faf3dc">Reference</span>
+      <h2 class="title" style="font-size:20px">Every pattern: past → present</h2>
+      <div id="refTable"></div>
+      <div class="note"><span class="ic">i</span><div>The three dashed rows are rare, literary patterns, and I have no Qur’anic verse for them. <span class="ar" style="font-size:17px">اجْلَوَّذَ</span> is the usual textbook example for <span class="ar" style="font-size:17px">افْعَوَّلَ</span>.</div></div>
+    </div>
+  </section>
+
+  <!-- 3 II III IV -->
+  <section class="slide">
+    <div class="panel">
+      <span class="eyebrow" style="color:var(--amber);background:var(--amber-l)">Forms II · III · IV</span>
+      <h2 class="title" style="font-size:20px">The ḍamma-prefix group: <span class="ar" style="display:inline;font-size:24px">يُفَعِّلُ · يُفَاعِلُ · يُفْعِلُ</span></h2>
+      <div class="rule rule-amber"><b class="h">Why ḍamma?</b>Their pasts are four letters long (<span class="ar">فَعَّلَ، فَاعَلَ، أَفْعَلَ</span>), so the prefix takes a <b>ḍamma</b>; the vowel before the last letter is <b>kasra</b>.</div>
+      <div class="vchips" id="vc-g24"></div>
+      <div class="curverb"><div class="w" id="cw-g24"></div><div class="m" id="cm-g24"></div></div>
+      <div id="ct-g24"></div>
+      <div class="legend"><span><b class="pre">يُـ</b> prefix</span><span><b class="pen">لِّ</b> vowel before the last letter</span><span><b class="tail">ـُونَ</b> ending</span></div>
+      <div class="qbox"><div class="tag">From the Qur’an</div>
+        <div class="qitem"><div class="line">وَ<span class="hl">يُعَلِّمُكُمُ</span> الْكِتَابَ وَالْحِكْمَةَ</div><small>Form II, he + كُمْ — Sūrah al-Baqarah, 2:151: “and teaches you the Book and wisdom.”</small></div>
+        <div class="qitem"><div class="line">وَ<span class="hl">يُنَزِّلُ</span> الْغَيْثَ وَيَعْلَمُ مَا فِي الْأَرْحَامِ</div><small>Form II, he — Sūrah Luqmān, 31:34: “and sends down the rain and knows what is in the wombs.”</small></div>
+        <div class="qitem"><div class="line"><span class="hl">يُسَبِّحُونَ</span> بِحَمْدِ رَبِّهِمْ</div><small>Form II, they (m.) — Sūrah Ghāfir, 40:7: “they glorify their Lord with praise.”</small></div>
+        <div class="qitem"><div class="line">فَإِنَّهُمْ لَا <span class="hl">يُكَذِّبُونَكَ</span></div><small>Form II, they (m.) + كَ — Sūrah al-An‘ām, 6:33: “they do not call you a liar.”</small></div>
+        <div class="qitem"><div class="line">وَمَن جَاهَدَ فَإِنَّمَا <span class="hl">يُجَاهِدُ</span> لِنَفْسِهِ</div><small>Form III, he — Sūrah al-‘Ankabūt, 29:6: “whoever strives, strives only for himself.”</small></div>
+        <div class="qitem"><div class="line">وَمِنَ النَّاسِ مَن <span class="hl">يُجَادِلُ</span> فِي اللَّهِ بِغَيْرِ عِلْمٍ</div><small>Form III, he — Sūrah al-Ḥajj, 22:3: “among people is one who disputes about Allah without knowledge.”</small></div>
+        <div class="qitem"><div class="line">وَلَا يَزَالُونَ <span class="hl">يُقَاتِلُونَكُمْ</span></div><small>Form III, they (m.) + كُمْ — Sūrah al-Baqarah, 2:217: “and they will not cease fighting you.”</small></div>
+        <div class="qitem"><div class="line"><span class="hl">يُخْرِجُ</span> الْحَيَّ مِنَ الْمَيِّتِ وَ<span class="hl">يُخْرِجُ</span> الْمَيِّتَ مِنَ الْحَيِّ</div><small>Form IV, he — Sūrah al-An‘ām, 6:95: “He brings the living out of the dead, and the dead out of the living.”</small></div>
+        <div class="qitem"><div class="line">وَهُوَ الَّذِي <span class="hl">يُرْسِلُ</span> الرِّيَاحَ بُشْرًا</div><small>Form IV, he — Sūrah al-A‘rāf, 7:57: “It is He who sends the winds as glad tidings.”</small></div>
+        <div class="qitem"><div class="line"><span class="hl">يُدْخِلُ</span> مَن يَشَاءُ فِي رَحْمَتِهِ</div><small>Form IV, he — Sūrah al-Insān, 76:31: “He admits whom He wills into His mercy.”</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 V VI -->
+  <section class="slide">
+    <div class="panel">
+      <span class="eyebrow" style="color:var(--teal-d);background:var(--teal-l)">Forms V · VI</span>
+      <h2 class="title" style="font-size:20px">The تَـ group: <span class="ar" style="display:inline;font-size:24px">يَتَفَعَّلُ · يَتَفَاعَلُ</span></h2>
+      <div class="rule rule-teal"><b class="h">The exception</b>Forms V and VI are the only ones that keep <b>fatḥa</b> before the last letter: <span class="ar">يَتَعَلَّمُ</span>, <span class="ar">يَتَنَازَعُ</span> — not kasra.</div>
+      <div class="vchips" id="vc-g56"></div>
+      <div class="curverb"><div class="w" id="cw-g56"></div><div class="m" id="cm-g56"></div></div>
+      <div id="ct-g56"></div>
+      <div class="legend"><span><b class="pre">يَـ</b> prefix</span><span><b class="pen">لَّ</b> vowel before the last letter</span><span><b class="tail">ـُونَ</b> ending</span></div>
+      <div class="qbox"><div class="tag">From the Qur’an</div>
+        <div class="qitem"><div class="line">فَاقْصُصِ الْقَصَصَ لَعَلَّهُمْ <span class="hl">يَتَفَكَّرُونَ</span></div><small>Form V, they (m.) — Sūrah al-A‘rāf, 7:176: “Relate the stories that perhaps they will reflect.”</small></div>
+        <div class="qitem"><div class="line">لَعَلَّهُمْ <span class="hl">يَتَذَكَّرُونَ</span></div><small>Form V, they (m.) — Sūrah Ibrāhīm, 14:25: “that perhaps they will be reminded.”</small></div>
+        <div class="qitem"><div class="line">فَ<span class="hl">يَتَعَلَّمُونَ</span> مِنْهُمَا مَا يُفَرِّقُونَ بِهِ بَيْنَ الْمَرْءِ وَزَوْجِهِ</div><small>Form V, they (m.) — Sūrah al-Baqarah, 2:102: “and they learn from them what separates a man from his wife.”</small></div>
+        <div class="qitem"><div class="line">وَالْمُطَلَّقَاتُ <span class="hl">يَتَرَبَّصْنَ</span> بِأَنفُسِهِنَّ ثَلَاثَةَ قُرُوءٍ</div><small>Form V, they (f.) — Sūrah al-Baqarah, 2:228: “Divorced women wait by themselves for three periods.”</small></div>
+        <div class="qitem"><div class="line">إِذْ <span class="hl">يَتَنَازَعُونَ</span> بَيْنَهُمْ أَمْرَهُمْ</div><small>Form VI, they (m.) — Sūrah al-Kahf, 18:21: “when they disputed among themselves about their affair.”</small></div>
+        <div class="qitem"><div class="line"><span class="hl">يَتَعَارَفُونَ</span> بَيْنَهُمْ</div><small>Form VI, they (m.) — Sūrah Yūnus, 10:45: “they will know one another.”</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 VII VIII -->
+  <section class="slide">
+    <div class="panel">
+      <span class="eyebrow" style="color:var(--rose-d);background:var(--rose-l)">Forms VII · VIII</span>
+      <h2 class="title" style="font-size:20px">The hamzat-waṣl pair: <span class="ar" style="display:inline;font-size:24px">يَنْفَعِلُ · يَفْتَعِلُ</span></h2>
+      <div class="rule rule-rose"><b class="h">The rule</b>The opening <span class="ar">ا</span> disappears, the prefix takes fatḥa, and the vowel before the last letter becomes <b>kasra</b>.</div>
+      <div class="vchips" id="vc-g78"></div>
+      <div class="curverb"><div class="w" id="cw-g78"></div><div class="m" id="cm-g78"></div></div>
+      <div id="ct-g78"></div>
+      <div class="legend"><span><b class="pre">يَـ</b> prefix</span><span><b class="pen">لِ</b> vowel before the last letter</span><span><b class="tail">ـُونَ</b> ending</span></div>
+      <div class="note"><span class="ic">!</span><div>Watch out for <span class="ar" style="font-size:17px">اسْتَمَعَ</span>: it looks like Form X, but its <span class="ar" style="font-size:17px">س</span> is a <b>root letter</b> (root س-م-ع), so it is Form VIII — <span class="ar" style="font-size:17px">يَسْتَمِعُ</span>.</div></div>
+      <div class="qbox"><div class="tag">From the Qur’an</div>
+        <div class="qitem"><div class="line">وَيَضِيقُ صَدْرِي وَلَا <span class="hl">يَنطَلِقُ</span> لِسَانِي</div><small>Form VII, he/it — Sūrah ash-Shu‘arā’, 26:13: “and my chest tightens and my tongue does not loosen.”</small></div>
+        <div class="qitem"><div class="line">مِمَّن <span class="hl">يَنقَلِبُ</span> عَلَىٰ عَقِبَيْهِ</div><small>Form VII, he — Sūrah al-Baqarah, 2:143: “from those who turn back on their heels.”</small></div>
+        <div class="qitem"><div class="line">أَيَّ مُنقَلَبٍ <span class="hl">يَنقَلِبُونَ</span></div><small>Form VII, they (m.) — Sūrah ash-Shu‘arā’, 26:227: “to what [final] turning they will turn.”</small></div>
+        <div class="qitem"><div class="line">فَإِذَا هُمْ فَرِيقَانِ <span class="hl">يَخْتَصِمُونَ</span></div><small>Form VIII, they (m.) — Sūrah an-Naml, 27:45: “and they became two groups disputing.”</small></div>
+        <div class="qitem"><div class="line">وَالَّذِينَ <span class="hl">يَجْتَنِبُونَ</span> كَبَائِرَ الْإِثْمِ</div><small>Form VIII, they (m.) — Sūrah ash-Shūrā, 42:37: “and those who avoid the major sins.”</small></div>
+        <div class="qitem"><div class="line">رَجُلَيْنِ <span class="hl">يَقْتَتِلَانِ</span></div><small>Form VIII, they two — Sūrah al-Qaṣaṣ, 28:15: “two men fighting each other.”</small></div>
+        <div class="qitem"><div class="line">فِيمَا كَانُوا فِيهِ <span class="hl">يَخْتَلِفُونَ</span></div><small>Form VIII, they (m.) — Sūrah al-Baqarah, 2:113: “about that over which they used to differ.”</small></div>
+        <div class="qitem"><div class="line">وَمِنْهُم مَّن <span class="hl">يَسْتَمِعُ</span> إِلَيْكَ</div><small>Form VIII (the tricky اسْتَمَعَ), he — Sūrah al-An‘ām, 6:25: “and among them are some who listen to you.”</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 IX -->
+  <section class="slide">
+    <div class="panel">
+      <span class="eyebrow" style="color:var(--rose-d);background:var(--rose-l)">Form IX</span>
+      <h2 class="title" style="font-size:20px">Colours and defects: <span class="ar" style="display:inline;font-size:24px">يَفْعَلُّ</span></h2>
+      <div class="rule rule-rose"><b class="h">The rule</b>The doubled last letter stays <b>packed</b> (shadda) before vowel endings — <span class="ar">يَحْمَرُّ، يَحْمَرُّونَ</span> — and <b>unpacks</b> before <span class="ar">ـْنَ</span>: <span class="ar">يَحْمَرِرْنَ</span>.</div>
+      <div class="vchips" id="vc-g9"></div>
+      <div class="curverb"><div class="w" id="cw-g9"></div><div class="m" id="cm-g9"></div></div>
+      <div id="ct-g9"></div>
+      <div class="legend"><span><b class="pre">يَـ</b> prefix</span><span><b class="pen">مَ</b> vowel before the doubled letter</span><span><b class="tail">ـُونَ</b> ending</span></div>
+      <div class="note"><span class="ic">i</span><div><span class="ar" style="font-size:17px">ابْيَضَّ</span> and <span class="ar" style="font-size:17px">اسْوَدَّ</span> have a weak letter in the root, but in Form IX it never changes — they conjugate like <span class="ar" style="font-size:17px">احْمَرَّ</span>.</div></div>
+      <div class="qbox"><div class="tag">From the Qur’an</div>
+        <div class="qitem"><div class="line">يَوْمَ <span class="hl">تَبْيَضُّ</span> وُجُوهٌ وَ<span class="hl">تَسْوَدُّ</span> وُجُوهٌ</div><small>Form IX, she/it — Sūrah Āl ‘Imrān, 3:106: “On the Day some faces will turn white and some faces will turn black.” (وُجُوهٌ is a broken plural, so the verb is feminine singular.)</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 X -->
+  <section class="slide">
+    <div class="panel">
+      <span class="eyebrow" style="color:var(--sap-d);background:var(--sap-l)">Form X</span>
+      <h2 class="title" style="font-size:20px">The “seeking” form: <span class="ar" style="display:inline;font-size:24px">يَسْتَفْعِلُ</span></h2>
+      <div class="rule rule-blue"><b class="h">The rule</b>Drop the opening <span class="ar">ا</span>; keep <span class="ar">سْتَ</span> after the prefix; kasra before the last letter.</div>
+      <div class="vchips" id="vc-g10"></div>
+      <div class="curverb"><div class="w" id="cw-g10"></div><div class="m" id="cm-g10"></div></div>
+      <div id="ct-g10"></div>
+      <div class="legend"><span><b class="pre">يَـ</b> prefix</span><span><b class="pen">فِ</b> vowel before the last letter</span><span><b class="tail">ـُونَ</b> ending</span></div>
+      <div class="qbox"><div class="tag">From the Qur’an</div>
+        <div class="qitem"><div class="line">وَ<span class="hl">يَسْتَغْفِرُونَ</span> لِلَّذِينَ آمَنُوا</div><small>they (m.) — Sūrah Ghāfir, 40:7: “and they ask forgiveness for those who believe.”</small></div>
+        <div class="qitem"><div class="line">وَالْمَلَائِكَةُ وَهُمْ لَا <span class="hl">يَسْتَكْبِرُونَ</span></div><small>they (m.) — Sūrah an-Naḥl, 16:49: “and the angels, and they are not arrogant.”</small></div>
+        <div class="qitem"><div class="line">وَ<span class="hl">يَسْتَعْجِلُونَكَ</span> بِالْعَذَابِ</div><small>they (m.) + كَ — Sūrah al-Ḥajj, 22:47: “and they ask you to hasten the punishment.”</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 QUAD 1 -->
+  <section class="slide">
+    <div class="panel">
+      <span class="eyebrow" style="color:var(--teal-d);background:var(--teal-l)">4-letter verbs · Part 1</span>
+      <h2 class="title"><span class="ar">الفِعْلُ الرُّبَاعِيّ</span>Bare, and augmented by تَـ</h2>
+      <div class="rule rule-teal"><b class="h">The rules</b>
+        <b>Bare</b> <span class="ar">فَعْلَلَ</span> is a four-letter past → <b>ḍamma</b> prefix: <span class="ar">يُوَسْوِسُ</span>.
+        <br><b>With تَـ</b> <span class="ar">تَفَعْلَلَ</span> → fatḥa prefix, <b>fatḥa</b> before the last letter: <span class="ar">يَتَدَحْرَجُ</span>.</div>
+      <div class="vchips" id="vc-q1"></div>
+      <div class="curverb"><div class="w" id="cw-q1"></div><div class="m" id="cm-q1"></div></div>
+      <div id="ct-q1"></div>
+      <div class="legend"><span><b class="pre">يُـ</b> prefix</span><span><b class="pen">وِ</b> vowel before the last letter</span><span><b class="tail">ـُونَ</b> ending</span></div>
+      <div class="qbox"><div class="tag">From the Qur’an — the bare pattern</div>
+        <div class="qitem"><div class="line">الَّذِي <span class="hl">يُوَسْوِسُ</span> فِي صُدُورِ النَّاسِ</div><small>he — Sūrah an-Nās, 114:5: “who whispers in the hearts of people.”</small></div>
+        <div class="qitem"><div class="line">وَنَعْلَمُ مَا <span class="hl">تُوَسْوِسُ</span> بِهِ نَفْسُهُ</div><small>she/it — Sūrah Qāf, 50:16: “and We know what his soul whispers to him.”</small></div>
+      </div>
+      <div class="note"><span class="ic">i</span><div>I have no verse to show for the augmented pattern <span class="ar" style="font-size:17px">تَفَعْلَلَ</span>.</div></div>
+    </div>
+  </section>
+
+  <!-- 9 QUAD 2 -->
+  <section class="slide">
+    <div class="panel">
+      <span class="eyebrow" style="color:var(--teal-d);background:var(--teal-l)">4-letter verbs · Part 2</span>
+      <h2 class="title"><span class="ar">مَزِيدُ الرُّبَاعِيّ بِحَرْفَيْنِ</span>Augmented by two letters</h2>
+      <div class="rule rule-teal"><b class="h">The rules</b>
+        <span class="ar">افْعَنْلَلَ</span> → <span class="ar">يَفْعَنْلِلُ</span> (the ن stays, kasra before the last letter).
+        <br><span class="ar">افْعَلَلَّ</span> → <span class="ar">يَفْعَلِلُّ</span> — the doubled last letter packs before vowel endings and unpacks before <span class="ar">ـْنَ</span>: <span class="ar">يَقْشَعْرِرْنَ</span>.</div>
+      <div class="vchips" id="vc-q2"></div>
+      <div class="curverb"><div class="w" id="cw-q2"></div><div class="m" id="cm-q2"></div></div>
+      <div id="ct-q2"></div>
+      <div class="legend"><span><b class="pre">يَـ</b> prefix</span><span><b class="pen">عِ</b> vowel before the last letter</span><span><b class="tail">ـُونَ</b> ending</span></div>
+      <div class="qbox"><div class="tag">From the Qur’an — the افْعَلَلَّ pattern</div>
+        <div class="qitem"><div class="line">﴿<span class="hl">تَقْشَعِرُّ</span> مِنْهُ جُلُودُ الَّذِينَ يَخْشَوْنَ رَبَّهُمْ﴾</div><small>she/it — Sūrah az-Zumar, 39:23: “the skins of those who fear their Lord shiver at it.” (جُلُود is a broken plural, so the verb is feminine singular.)</small></div>
+        <div class="qitem"><div class="line">أَلَا بِذِكْرِ اللَّهِ <span class="hl">تَطْمَئِنُّ</span> الْقُلُوبُ</div><small>she/it — Sūrah ar-Ra‘d, 13:28: “Verily, in the remembrance of Allah hearts find rest.” The root has a hamza (ط-م-أ-ن), which changes its seat: يَطْمَئِنُّ.</small></div>
+      </div>
+      <div class="note"><span class="ic">i</span><div>I have no verse for <span class="ar" style="font-size:17px">افْعَنْلَلَ</span>, and <span class="ar" style="font-size:17px">اطْمَأَنَّ</span> is not in the conjugator because of its hamza.</div></div>
+    </div>
+  </section>
+
+  <!-- 10 SIDE BY SIDE -->
+  <section class="slide">
+    <div class="panel">
+      <span class="eyebrow" style="color:var(--gold);background:#faf3dc">Side by side</span>
+      <h2 class="title" style="font-size:20px">One verb per form: he, they (m.), they (f.)</h2>
+      <p class="lead">Notice the <span class="pre">prefix vowel</span> (ḍamma only in II · III · IV), the <span class="pen">vowel before the last letter</span> (fatḥa only in V · VI), and how Form IX unpacks in the feminine plural.</p>
+      <div class="mwrap" id="matrix"></div>
+    </div>
+  </section>
+
+  <!-- 11 RECAP -->
+  <section class="slide">
+    <div class="panel">
+      <span class="eyebrow" style="color:var(--gold);background:#faf3dc">Recap</span>
+      <h2 class="title" style="font-size:20px">Everything in one place</h2>
+      <table class="recap">
+        <tr><td>Build</td><td>drop the opening hamza/alif → add the prefix → set the two vowels → add the ending.</td></tr>
+        <tr><td>Prefix vowel</td><td><b>ḍamma</b> for four-letter pasts: <span class="w">يُفَعِّلُ · يُفَاعِلُ · يُفْعِلُ · يُفَعْلِلُ</span>. <b>Fatḥa</b> for everything else.</td></tr>
+        <tr><td>Before the last letter</td><td><b>kasra</b> — except V, VI and <span class="w">تَفَعْلَلَ</span>: <span class="w">يَتَفَعَّلُ · يَتَفَاعَلُ · يَتَفَعْلَلُ</span>.</td></tr>
+        <tr><td>Hamzat waṣl</td><td>VII–X and the 4-letter <span class="w">افْعَنْلَلَ، افْعَلَلَّ</span>: it drops — <span class="w">يَنْفَعِلُ · يَفْتَعِلُ · يَسْتَفْعِلُ</span>.</td></tr>
+        <tr><td>Doubled last letter</td><td>IX and <span class="w">افْعَلَلَّ</span>: packed before vowels (<span class="w">يَحْمَرُّونَ</span>), unpacked before <span class="w">ـْنَ</span> (<span class="w">يَحْمَرِرْنَ</span>).</td></tr>
+        <tr><td>The endings</td><td>The same fourteen as before: <span class="w">ـُ · ـَانِ · ـُونَ · ـِينَ · ـْنَ</span>.</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- 12 QUIZ -->
+  <section class="slide">
+    <div class="panel quiz">
+      <span class="eyebrow" style="color:var(--gold);background:#faf3dc">Quick Check</span>
+      <h2 class="title" style="font-size:20px">Pick the right present-tense form</h2>
+      <p class="lead">Five questions turn a past verb into its present tense; five conjugate it for a pronoun.</p>
+      <div class="q-count" id="qcount"></div>
+      <div class="q-word ar" id="qword"></div>
+      <div class="q-for" id="qfor"></div>
+      <div class="opts" id="qopts"></div>
+      <div class="fb" id="qfb"></div>
+      <div class="scoreline" id="qscore"></div>
+    </div>
+  </section>
+
+  <!-- 13 ANSWER KEY -->
+  <section class="slide">
+    <div class="panel">
+      <span class="eyebrow" style="color:var(--gold);background:#faf3dc">Reference</span>
+      <h2 class="title" style="font-size:20px">Quiz — questions &amp; answers</h2>
+      <p class="lead">All ten questions, with the correct form and the reason.</p>
+      <div id="keyList"></div>
+    </div>
+  </section>
+
+  <!-- 14 DONE -->
+  <section class="slide">
+    <div class="panel hero">
+      <div style="font-size:52px">🎉</div>
+      <div class="ar big" style="font-size:34px">أَحْسَنْتَ!</div>
+      <div class="sub">You can turn any augmented verb into the present tense</div>
+      <p class="lead" style="max-width:620px;margin:0 auto">Drop the opening hamza, add the prefix, choose the prefix vowel
+        by counting letters, and put kasra (or fatḥa for V and VI) before the last letter.</p>
+      <div class="chips" style="margin-top:6px">
+        <span class="mini" style="background:var(--amber-l);color:var(--amber)">يُعَلِّمُ</span>
+        <span class="mini" style="background:var(--teal-l);color:var(--teal-d)">يَتَعَلَّمُ</span>
+        <span class="mini" style="background:var(--rose-l);color:var(--rose-d)">يَخْتَلِفُ</span>
+        <span class="mini" style="background:var(--sap-l);color:var(--sap-d)">يَسْتَغْفِرُ</span>
+      </div>
+      <div style="margin-top:22px"><button class="btn next" onclick="goTo(0)">↺ Start over</button></div>
+    </div>
+  </section>
+
+  <div class="nav">
+    <button class="btn prev" id="prevBtn" onclick="move(-1)">‹ Back</button>
+    <button class="btn next" id="nextBtn" onclick="move(1)">Next ›</button>
+  </div>
+  <p class="kbd-hint">Tip: use the ← and → arrow keys to move between steps</p>
+</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const labels=['Intro','Build It','Reference','II · III · IV','V · VI','VII · VIII','IX','X','4-Letter 1','4-Letter 2','Side by Side','Recap','Quiz','Answer Key','Done'];
+  let cur=0;
+  const dotWrap=document.getElementById('dots');
+  labels.forEach((l,i)=>{const b=document.createElement('button');b.textContent=l;b.onclick=()=>goTo(i);dotWrap.appendChild(b);});
+  const dots=[...dotWrap.children];
+  function render(){
+    slides.forEach((s,i)=>s.classList.toggle('show',i===cur));
+    dots.forEach((d,i)=>d.classList.toggle('active',i===cur));
+    document.getElementById('bar').style.width=(cur/(slides.length-1)*100)+'%';
+    document.getElementById('prevBtn').disabled=cur===0;
+    document.getElementById('nextBtn').style.visibility = cur===slides.length-1?'hidden':'visible';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function move(d){ goTo(Math.min(slides.length-1,Math.max(0,cur+d))); }
+  function goTo(i){ cur=i; render(); }
+  document.addEventListener('keydown',e=>{ if(e.key==='ArrowRight')move(1); if(e.key==='ArrowLeft')move(-1); });
+
+  /* =============== engine: past + present of augmented verbs =============== */
+  const FATHA='\u064E', KASRA='\u0650', DAMMA='\u064F', SUKUN='\u0652', SHADDA='\u0651';
+  const PL={ huwa:'ي', huma_m:'ي', hum:'ي', hiya:'ت', huma_f:'ت', hunna:'ي',
+             anta:'ت', antuma_m:'ت', antum:'ت', anti:'ت', antuma_f:'ت', antunna:'ت', ana:'أ', nahnu:'ن' };
+  const SUF={ huwa:DAMMA, huma_m:FATHA+'انِ', hum:DAMMA+'ونَ', hiya:DAMMA, huma_f:FATHA+'انِ', hunna:SUKUN+'نَ',
+              anta:DAMMA, antuma_m:FATHA+'انِ', antum:DAMMA+'ونَ', anti:KASRA+'ينَ', antuma_f:FATHA+'انِ', antunna:SUKUN+'نَ',
+              ana:DAMMA, nahnu:DAMMA };
+  const P={
+    huwa:['هُوَ','he'], huma_m:['هُمَا','they two (m.)'], hum:['هُمْ','they (m.)'],
+    hiya:['هِيَ','she'], huma_f:['هُمَا','they two (f.)'], hunna:['هُنَّ','they (f.)'],
+    anta:['أَنْتَ','you (m.)'], antuma_m:['أَنْتُمَا','you two (m.)'], antum:['أَنْتُمْ','you (m. pl.)'],
+    anti:['أَنْتِ','you (f.)'], antuma_f:['أَنْتُمَا','you two (f.)'], antunna:['أَنْتُنَّ','you (f. pl.)'],
+    ana:['أَنَا','I'], nahnu:['نَحْنُ','we']
+  };
+  const ALLK=Object.keys(PL);
+  const UNPACK=['hunna','antunna'];
+  // prefix vowel is ḍamma for four-letter pasts; pen = default vowel before the last letter
+  const TYPES={ II:{dam:1,pen:KASRA}, III:{dam:1,pen:KASRA}, IV:{dam:1,pen:KASRA}, V:{pen:FATHA}, VI:{pen:FATHA},
+                VII:{pen:KASRA}, VIII:{pen:KASRA}, IX:{pen:KASRA}, X:{pen:KASRA},
+                QB:{dam:1,pen:KASRA}, QT:{pen:FATHA}, QN:{pen:KASRA}, QL:{pen:KASRA} };
+
+  // g = slide group, f = pattern, r = root letters, s = "he ..." gloss
+  const V=[
+    // II · III · IV
+    {g:'g24',f:'II', r:['ع','ل','م'], en:'teach', s:'teaches'},
+    {g:'g24',f:'II', r:['ن','ز','ل'], en:'send down', s:'sends down'},
+    {g:'g24',f:'II', r:['ع','ذ','ب'], en:'punish', s:'punishes'},
+    {g:'g24',f:'II', r:['س','ب','ح'], en:'glorify', s:'glorifies'},
+    {g:'g24',f:'II', r:['ك','ذ','ب'], en:'call a liar', s:'calls a liar'},
+    {g:'g24',f:'III',r:['ق','ت','ل'], en:'fight', s:'fights'},
+    {g:'g24',f:'III',r:['ج','د','ل'], en:'dispute', s:'disputes'},
+    {g:'g24',f:'III',r:['ج','ه','د'], en:'strive', s:'strives'},
+    {g:'g24',f:'III',r:['ك','ت','ب'], en:'write to', s:'writes to'},
+    {g:'g24',f:'III',r:['س','ب','ق'], en:'race', s:'races'},
+    {g:'g24',f:'IV', r:['خ','ر','ج'], en:'bring out', s:'brings out'},
+    {g:'g24',f:'IV', r:['ر','س','ل'], en:'send', s:'sends'},
+    {g:'g24',f:'IV', r:['د','خ','ل'], en:'admit', s:'admits'},
+    {g:'g24',f:'IV', r:['ك','ر','م'], en:'honour', s:'honours'},
+    {g:'g24',f:'IV', r:['ش','ه','د'], en:'make witness', s:'makes witness'},
+    // V · VI
+    {g:'g56',f:'V',  r:['ع','ل','م'], en:'learn', s:'learns'},
+    {g:'g56',f:'V',  r:['ف','ك','ر'], en:'reflect', s:'reflects'},
+    {g:'g56',f:'V',  r:['ذ','ك','ر'], en:'be reminded', s:'is reminded'},
+    {g:'g56',f:'V',  r:['ر','ب','ص'], en:'wait', s:'waits'},
+    {g:'g56',f:'V',  r:['ق','د','م'], en:'advance', s:'advances'},
+    {g:'g56',f:'VI', r:['ن','ز','ع'], en:'dispute', s:'disputes'},
+    {g:'g56',f:'VI', r:['ع','ر','ف'], en:'get to know each other', s:'gets to know'},
+    {g:'g56',f:'VI', r:['ب','د','ل'], en:'exchange', s:'exchanges'},
+    {g:'g56',f:'VI', r:['ش','ب','ه'], en:'resemble each other', s:'resembles'},
+    // VII · VIII
+    {g:'g78',f:'VII', r:['ط','ل','ق'], en:'set off', s:'sets off'},
+    {g:'g78',f:'VII', r:['ق','ل','ب'], en:'turn over', s:'turns over'},
+    {g:'g78',f:'VII', r:['ك','س','ر'], en:'break (itself)', s:'breaks'},
+    {g:'g78',f:'VII', r:['ف','ج','ر'], en:'burst forth', s:'bursts forth'},
+    {g:'g78',f:'VIII',r:['خ','ل','ف'], en:'differ', s:'differs'},
+    {g:'g78',f:'VIII',r:['خ','ص','م'], en:'dispute', s:'disputes'},
+    {g:'g78',f:'VIII',r:['ج','ن','ب'], en:'avoid', s:'avoids'},
+    {g:'g78',f:'VIII',r:['ق','ت','ل'], en:'fight each other', s:'fights'},
+    {g:'g78',f:'VIII',r:['ج','م','ع'], en:'gather', s:'gathers'},
+    {g:'g78',f:'VIII',r:['س','م','ع'], en:'listen', s:'listens'},
+    // IX
+    {g:'g9', f:'IX', r:['ح','م','ر'], en:'turn red', s:'turns red'},
+    {g:'g9', f:'IX', r:['ص','ف','ر'], en:'turn yellow', s:'turns yellow'},
+    {g:'g9', f:'IX', r:['خ','ض','ر'], en:'turn green', s:'turns green'},
+    {g:'g9', f:'IX', r:['ب','ي','ض'], en:'turn white', s:'turns white'},
+    {g:'g9', f:'IX', r:['س','و','د'], en:'turn black', s:'turns black'},
+    // X
+    {g:'g10',f:'X', r:['غ','ف','ر'], en:'seek forgiveness', s:'seeks forgiveness'},
+    {g:'g10',f:'X', r:['ك','ب','ر'], en:'be arrogant', s:'is arrogant'},
+    {g:'g10',f:'X', r:['ع','ج','ل'], en:'hasten', s:'hastens'},
+    {g:'g10',f:'X', r:['خ','ر','ج'], en:'extract', s:'extracts'},
+    {g:'g10',f:'X', r:['ق','ب','ل'], en:'welcome', s:'welcomes'},
+    // 4-letter part 1
+    {g:'q1', f:'QB', r:['و','س','و','س'], en:'whisper', s:'whispers'},
+    {g:'q1', f:'QB', r:['ز','ل','ز','ل'], en:'shake', s:'shakes'},
+    {g:'q1', f:'QB', r:['د','ح','ر','ج'], en:'roll (something)', s:'rolls (it)'},
+    {g:'q1', f:'QT', r:['د','ح','ر','ج'], en:'roll', s:'rolls'},
+    {g:'q1', f:'QT', r:['ز','ل','ز','ل'], en:'quake', s:'quakes'},
+    // 4-letter part 2
+    {g:'q2', f:'QN', r:['ح','ر','ج','م'], en:'crowd together', s:'crowds together'},
+    {g:'q2', f:'QN', r:['ح','ر','ف','ش'], en:'bristle up', s:'bristles up'},
+    {g:'q2', f:'QL', r:['س','ب','ط','ر'], en:'stretch out', s:'stretches out'},
+    {g:'q2', f:'QL', r:['ق','ش','ع','ر'], en:'shiver', s:'shivers'},
+  ];
+  const FORMLBL={II:'II',III:'III',IV:'IV',V:'V',VI:'VI',VII:'VII',VIII:'VIII',IX:'IX',X:'X',QB:'فَعْلَلَ',QT:'تَفَعْلَلَ',QN:'افْعَنْلَلَ',QL:'افْعَلَلَّ'};
+
+  function pastOf(v){
+    const r=v.r;
+    switch(v.f){
+      case 'II':  return r[0]+FATHA+r[1]+SHADDA+FATHA+r[2]+FATHA;
+      case 'III': return r[0]+FATHA+'ا'+r[1]+FATHA+r[2]+FATHA;
+      case 'IV':  return 'أَ'+r[0]+SUKUN+r[1]+FATHA+r[2]+FATHA;
+      case 'V':   return 'تَ'+r[0]+FATHA+r[1]+SHADDA+FATHA+r[2]+FATHA;
+      case 'VI':  return 'تَ'+r[0]+FATHA+'ا'+r[1]+FATHA+r[2]+FATHA;
+      case 'VII': return 'انْ'+r[0]+FATHA+r[1]+FATHA+r[2]+FATHA;
+      case 'VIII':return 'ا'+r[0]+SUKUN+'تَ'+r[1]+FATHA+r[2]+FATHA;
+      case 'IX':  return 'ا'+r[0]+SUKUN+r[1]+FATHA+r[2]+SHADDA+FATHA;
+      case 'X':   return 'اسْتَ'+r[0]+SUKUN+r[1]+FATHA+r[2]+FATHA;
+      case 'QB':  return r[0]+FATHA+r[1]+SUKUN+r[2]+FATHA+r[3]+FATHA;
+      case 'QT':  return 'تَ'+r[0]+FATHA+r[1]+SUKUN+r[2]+FATHA+r[3]+FATHA;
+      case 'QN':  return 'ا'+r[0]+SUKUN+r[1]+FATHA+'نْ'+r[2]+FATHA+r[3]+FATHA;
+      case 'QL':  return 'ا'+r[0]+SUKUN+r[1]+FATHA+r[2]+FATHA+r[3]+SHADDA+FATHA;
+    }
+  }
+  // o.pre / o.pen override the two vowels (used only to build wrong quiz options)
+  function parts(v,k,o){
+    o=o||{};
+    const t=TYPES[v.f], r=v.r;
+    const pv=(o.pre!==undefined)?o.pre:(t.dam?DAMMA:FATHA);
+    const pen=(o.pen!==undefined)?o.pen:t.pen;
+    let pre=PL[k]+pv, head, last, suf=SUF[k];
+    switch(v.f){
+      case 'II':  head=r[0]+FATHA+r[1]+SHADDA; last=r[2]; break;
+      case 'III': head=r[0]+FATHA+'ا'+r[1]; last=r[2]; break;
+      case 'IV':  head=r[0]+SUKUN+r[1]; last=r[2]; break;
+      case 'V':   pre+='تَ'; head=r[0]+FATHA+r[1]+SHADDA; last=r[2]; break;
+      case 'VI':  pre+='تَ'; head=r[0]+FATHA+'ا'+r[1]; last=r[2]; break;
+      case 'VII': pre+='نْ'; head=r[0]+FATHA+r[1]; last=r[2]; break;
+      case 'VIII':head=r[0]+SUKUN+'تَ'+r[1]; last=r[2]; break;
+      case 'X':   pre+='سْتَ'; head=r[0]+SUKUN+r[1]; last=r[2]; break;
+      case 'IX':
+        if(!UNPACK.includes(k)) return {pre, head:r[0]+SUKUN+r[1], pen:FATHA, last:r[2]+SHADDA, suf};
+        return {pre, head:r[0]+SUKUN+r[1]+FATHA+r[2], pen, last:r[2], suf};
+      case 'QB':  head=r[0]+FATHA+r[1]+SUKUN+r[2]; last=r[3]; break;
+      case 'QT':  pre+='تَ'; head=r[0]+FATHA+r[1]+SUKUN+r[2]; last=r[3]; break;
+      case 'QN':  head=r[0]+SUKUN+r[1]+FATHA+'نْ'+r[2]; last=r[3]; break;
+      case 'QL':
+        if(!UNPACK.includes(k)) return {pre, head:r[0]+SUKUN+r[1]+FATHA+r[2], pen, last:r[3]+SHADDA, suf};
+        return {pre, head:r[0]+SUKUN+r[1]+FATHA+r[2]+SUKUN+r[3], pen, last:r[3], suf};
+    }
+    return {pre, head, pen, last, suf};
+  }
+  function form(v,k,o){ const p=parts(v,k,o); return p.pre+p.head+p.pen+p.last+p.suf; }
+  function presentOf(v){ return form(v,'huwa'); }
+  function wordHTML(v,k){ const p=parts(v,k); return `<span class="pre">${p.pre}</span>${p.head}<span class="pen">${p.pen}</span>${p.last}<span class="tail">${p.suf}</span>`; }
+
+  /* ---------- tables ---------- */
+  const ROWS=[
+    ['I / we','أنا · نحن','r1',['ana',null,'nahnu']],
+    ['You (m.)','أنتَ','rm',['anta','antuma_m','antum']],
+    ['You (f.)','أنتِ','rf',['anti','antuma_f','antunna']],
+    ['He / they','هو','rm',['huwa','huma_m','hum']],
+    ['She / they','هي','rf',['hiya','huma_f','hunna']],
+  ];
+  function tableHTML(v){
+    let h='<table class="ctab"><thead><tr><th></th><th>Singular</th><th>Dual</th><th>Plural</th></tr></thead><tbody>';
+    ROWS.forEach(r=>{
+      h+=`<tr class="${r[2]}"><td><div class="rl">${r[0]}<small class="ar">${r[1]}</small></div></td>`;
+      r[3].forEach(k=>{ h+= k ? `<td><div class="cw">${wordHTML(v,k)}</div><div class="pn">${P[k][0]}</div></td>` : '<td class="dash">—</td>'; });
+      h+='</tr>';
+    });
+    return h+'</tbody></table>';
+  }
+  function initConj(g){
+    const list=V.filter(v=>v.g===g);
+    const wrap=document.getElementById('vc-'+g);
+    let curI=0;
+    function draw(){
+      const v=list[curI];
+      [...wrap.children].forEach((c,i)=>c.classList.toggle('active',i===curI));
+      document.getElementById('cw-'+g).textContent=pastOf(v)+'  →  '+presentOf(v);
+      document.getElementById('cm-'+g).innerHTML=`he ${v.s} · pattern <span class="ar" style="font-size:15px">${FORMLBL[v.f]}</span>`;
+      document.getElementById('ct-'+g).innerHTML=tableHTML(v);
+    }
+    list.forEach((v,i)=>{
+      const b=document.createElement('button'); b.className='vchip';
+      b.innerHTML=`<span class="w ar">${presentOf(v)}</span><small>${FORMLBL[v.f]} · ${v.en}</small>`;
+      b.onclick=()=>{curI=i; draw();}; wrap.appendChild(b);
+    });
+    draw();
+  }
+  ['g24','g56','g78','g9','g10','q1','q2'].forEach(initConj);
+
+  function pick(f,rootStr){ return V.find(v=>v.f===f && v.r.join('')===rootStr); }
+
+  // reference table
+  (function(){
+    const rows=[
+      ['II','عَلَّمَ','ع ل م','فَعَّلَ','يُفَعِّلُ'], ['III','قَاتَلَ','ق ت ل','فَاعَلَ','يُفَاعِلُ'], ['IV','أَخْرَجَ','خ ر ج','أَفْعَلَ','يُفْعِلُ'],
+      ['V','تَعَلَّمَ','ع ل م','تَفَعَّلَ','يَتَفَعَّلُ'], ['VI','تَنَازَعَ','ن ز ع','تَفَاعَلَ','يَتَفَاعَلُ'],
+      ['VII','انْقَلَبَ','ق ل ب','انْفَعَلَ','يَنْفَعِلُ'], ['VIII','اخْتَلَفَ','خ ل ف','افْتَعَلَ','يَفْتَعِلُ'],
+      ['IX','احْمَرَّ','ح م ر','افْعَلَّ','يَفْعَلُّ'], ['X','اسْتَغْفَرَ','غ ف ر','اسْتَفْعَلَ','يَسْتَفْعِلُ'],
+    ];
+    let h='<table class="reftab"><thead><tr><th></th><th>Past</th><th>Present</th><th>Example</th></tr></thead><tbody>';
+    h+='<tr class="sep"><td colspan="4">Three-letter roots, augmented</td></tr>';
+    rows.forEach(([f,ex,rt,pa,pr])=>{
+      const v=pick(f,rt.replace(/ /g,''));
+      h+=`<tr><td>${f}</td><td class="w">${pa}</td><td class="w">${pr}</td><td><span class="w">${pastOf(v)} ← ${presentOf(v)}</span></td></tr>`;
+    });
+    [['افْعَوْعَلَ','يَفْعَوْعِلُ','اخْشَوْشَنَ ← يَخْشَوْشِنُ'],['افْعَالَّ','يَفْعَالُّ','احْوَارَّ ← يَحْوَارُّ'],['افْعَوَّلَ','يَفْعَوِّلُ','اجْلَوَّذَ ← يَجْلَوِّذُ']]
+      .forEach(([pa,pr,ex])=>{ h+=`<tr class="rare"><td>rare</td><td class="w">${pa}</td><td class="w">${pr}</td><td><span class="w">${ex}</span></td></tr>`; });
+    h+='<tr class="sep"><td colspan="4">Four-letter roots</td></tr>';
+    [['QB','وَسْوَسَ','فَعْلَلَ','يُفَعْلِلُ'],['QT','تَدَحْرَجَ','تَفَعْلَلَ','يَتَفَعْلَلُ'],['QN','احْرَنْجَمَ','افْعَنْلَلَ','يَفْعَنْلِلُ'],['QL','اقْشَعَرَّ','افْعَلَلَّ','يَفْعَلِلُّ']]
+      .forEach(([f,ex,pa,pr])=>{
+        const v=V.find(x=>x.f===f && pastOf(x).replace(/[\u064B-\u0652]/g,'')===ex.replace(/[\u064B-\u0652]/g,''));
+        h+=`<tr><td>4</td><td class="w">${pa}</td><td class="w">${pr}</td><td><span class="w">${pastOf(v)} ← ${presentOf(v)}</span></td></tr>`;
+      });
+    document.getElementById('refTable').innerHTML=h+'</tbody></table>';
+  })();
+
+  // side-by-side matrix
+  (function(){
+    const picks=[['II','علم'],['III','قتل'],['IV','خرج'],['V','ذكر'],['VI','عرف'],['VII','قلب'],['VIII','خلف'],['IX','حمر'],['X','غفر']].map(([f,r])=>pick(f,r));
+    let h='<table class="mx"><thead><tr><th></th><th>Past</th><th>He</th><th>They (m.)</th><th>They (f.)</th></tr></thead><tbody>';
+    picks.forEach(v=>{
+      h+=`<tr><td>${v.f}</td><td><span class="cw">${pastOf(v)}</span></td>`;
+      ['huwa','hum','hunna'].forEach(k=>{ h+=`<td><span class="cw">${wordHTML(v,k)}</span></td>`; });
+      h+='</tr>';
+    });
+    document.getElementById('matrix').innerHTML=h+'</tbody></table>';
+  })();
+
+  /* =============== quiz =============== */
+  const QA=[['III','قتل'],['V','علم'],['X','غفر'],['IV','خرج'],['VII','قلب']].map(([f,r])=>({type:'present', v:pick(f,r)}));
+  const QB=[['VIII','خلف','hum'],['II','علم','hunna'],['VI','نزع','antuma_m'],['IX','حمر','hunna'],['QL','قشعر','hiya']]
+    .map(([f,r,k])=>({type:'form', v:V.find(v=>v.f===f&&v.r.join('')===r), k}));
+  const QS=[QA[0],QB[0],QA[1],QB[1],QA[2],QB[2],QA[3],QB[3],QA[4],QB[4]];
+  let qi=0, qs=0;
+  function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+  function qParts(q){
+    const v=q.v;
+    if(q.type==='present'){
+      const t=TYPES[v.f], dp=t.dam?DAMMA:FATHA, fp=t.dam?FATHA:DAMMA, fpen=t.pen===KASRA?FATHA:KASRA;
+      const ans=presentOf(v);
+      const dis=[form(v,'huwa',{pre:fp}), form(v,'huwa',{pen:fpen}), form(v,'huwa',{pre:fp,pen:fpen})];
+      return {ans, opts:shuffle([ans,...dis])};
+    }
+    const ans=form(v,q.k), seen=new Set([ans]), dis=[];
+    shuffle(ALLK).forEach(k=>{ const w=form(v,k); if(!seen.has(w)&&dis.length<3){seen.add(w);dis.push(w);} });
+    return {ans, opts:shuffle([ans,...dis])};
+  }
+  function ruleText(f){
+    if(['II','III','IV','QB'].includes(f)) return 'a four-letter past takes a <b>ḍamma</b> on the prefix, and a <b>kasra</b> before the last letter';
+    if(['V','VI','QT'].includes(f)) return 'Forms V and VI keep <b>fatḥa</b> on the prefix and <b>fatḥa</b> before the last letter';
+    if(['IX','QL'].includes(f)) return 'the doubled last letter stays <b>packed</b> before a vowel ending and <b>unpacks</b> before ـْنَ';
+    return 'the opening hamzat waṣl drops, the prefix takes <b>fatḥa</b>, and the vowel before the last letter is <b>kasra</b>';
+  }
+  function whyOf(q){
+    const v=q.v;
+    if(q.type==='present') return `${pastOf(v)} → ${presentOf(v)}: ${ruleText(v.f)}.`;
+    const p=parts(v,q.k);
+    return `The prefix <span class="ar" style="font-size:18px">${p.pre}</span> and the ending <span class="ar" style="font-size:18px">${p.suf}</span> mark “${P[q.k][1]}”. ` + (UNPACK.includes(q.k)&&['IX','QL'].includes(v.f)?'The doubled letter unpacks before ـْنَ.':'');
+  }
+  function loadQ(){
+    const q=QS[qi], {ans,opts}=qParts(q);
+    document.getElementById('qword').textContent=pastOf(q.v);
+    document.getElementById('qcount').textContent=`Question ${qi+1} of ${QS.length}`;
+    document.getElementById('qfor').innerHTML = q.type==='present'
+      ? `he ${q.v.s} — pick the correct <b>present tense (he)</b>`
+      : `conjugate its present tense for <b>${P[q.k][1]}</b> <span class="ar" style="font-size:18px">(${P[q.k][0]})</span>`;
+    const wrap=document.getElementById('qopts'); wrap.innerHTML='';
+    opts.forEach(o=>{
+      const b=document.createElement('button'); b.className='opt'; b.textContent=o;
+      b.onclick=()=>answer(b,o,ans,q); wrap.appendChild(b);
+    });
+    document.getElementById('qfb').className='fb';
+  }
+  function answer(btn,choice,ans,q){
+    [...document.querySelectorAll('#qopts .opt')].forEach(o=>{ o.disabled=true; if(o.textContent===ans)o.classList.add('correct'); });
+    const why=whyOf(q), fb=document.getElementById('qfb');
+    if(choice===ans){qs++; fb.className='fb ok show'; fb.innerHTML='✅ Correct! '+why;}
+    else{btn.classList.add('wrong'); fb.className='fb no show'; fb.innerHTML='Not quite. '+why;}
+    qi++;
+    if(qi<QS.length){ setTimeout(loadQ,2300); }
+    else{ setTimeout(()=>{document.getElementById('qscore').textContent=`Score: ${qs} / ${QS.length}`;},1500); }
+  }
+  function buildKey(){
+    const wrap=document.getElementById('keyList');
+    QS.forEach((q,i)=>{
+      const ans=q.type==='present'?presentOf(q.v):form(q.v,q.k);
+      const lbl=q.type==='present'?'→ he (present)':'→ '+P[q.k][1];
+      const row=document.createElement('div'); row.className='keyrow';
+      row.innerHTML=`<div class="qn">${i+1}</div><div class="body">
+        <span class="phrase ar">${pastOf(q.v)}</span> <span style="color:var(--muted)">${lbl}</span>
+        <span class="verdict">${ans}</span><div class="why">${whyOf(q)}</div></div>`;
+      wrap.appendChild(row);
+    });
+  }
+  loadQ(); buildKey(); render();
+</script>
+</body>
+</html>
